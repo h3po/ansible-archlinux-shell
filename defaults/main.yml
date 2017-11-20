@@ -1,0 +1,16 @@
+---
+zsh_theme: bira
+zsh_plugins:
+  - git
+exports:
+  EDITOR: nano
+  LIBVIRT_DEFAULT_URI: "qemu:///system"
+  GOPATH: "~/go"
+aliases:
+  ll: "ls -hal"
+  du: "du -hs"
+  free: "free -h"
+  mount: "mount | column -t"
+  pacs: "pacaur -Ss"
+  paci: "pacaur -Sy"
+  pacq: "pacaur -Qi"

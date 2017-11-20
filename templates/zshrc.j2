@@ -1,0 +1,33 @@
+export ZSH=/usr/share/oh-my-zsh
+
+ZSH_THEME="{{ zsh_theme }}"
+plugins=({{ zsh_plugins | join(' ') }})
+source $ZSH/oh-my-zsh.sh
+
+{% for k,v in exports.items() %}
+export {{k}}="{{v}}"
+{% endfor %}
+
+{% for k,v in aliases.items() %}
+alias {{k}}="{{v}}"
+{% endfor %}
+
+#always pipe --help output to less
+function lessify() {
+    if [[ "$BUFFER" =~ " --help$" ]] ; then
+        BUFFER="$BUFFER | less -FX"
+    fi
+    zle accept-line
+}
+
+zle -N lessify_widget lessify
+bindkey '^M' lessify_widget
+
+if [ -f ~/.ssh/id_rsa ]; then
+  if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+    eval `ssh-agent`
+    ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+  fi
+  export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+  ssh-add -l > /dev/null || ssh-add ~/.ssh/id_rsa
+fi

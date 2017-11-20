@@ -1,0 +1,24 @@
+---
+- include_role:
+    name: h3po.archlinux-pacaur
+  vars:
+    archlinux_pacaur_pkgs:
+      - zsh
+      - oh-my-zsh-git
+      - byobu
+
+- name: Template zshrc
+  template:
+    src: templates/zshrc.j2
+    dest: ~/.zshrc
+
+- name: Change default shell to zsh
+  shell: "chsh -s /bin/zsh {{ansible_user_id}}"
+  register: tmp
+  changed_when: "'Shell not changed' not in tmp.stderr"
+  become: true
+
+- name: Enable byobu
+  shell: "if [ ! \"$(grep -s byobu-launch ~/.zprofile)\" ] ; then byobu-enable; fi"
+  register: tmp
+  changed_when: "'byobu-disable' in tmp.stdout"
