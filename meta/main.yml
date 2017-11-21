@@ -11,6 +11,3 @@ galaxy_info:
         - all
   tags:
     - shell
-dependencies: 
-  - src: git+https://github.com/h3po/ansible-archlinux-pacaur.git
-    name: h3po.archlinux-pacaur
